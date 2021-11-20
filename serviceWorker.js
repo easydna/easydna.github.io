@@ -38,13 +38,32 @@ self.addEventListener("fetch", fetchEvent => {
     )
 })
 
+
+function syncDNA(){
+
+    const request = indexedDB.open('easy_dna',1)
+    let db
+
+    request.onsuccess = function(){
+
+        db = this.result
+
+        let tr = db.transaction('comunicado','readwrite')
+        let store = tr.objectStore('comunicado')
+
+        console.log(store.getAll())
+
+    }
+}
+
 self.addEventListener('sync', function(event) {
 	
     console.log("sync event", event);
   
-    if (event.tag === 'syncDNA'){
+    if (event.tag === 'syncDNAs'){
 
-        console.log('SyncDNA')
+        syncDNA()
     }
 
 });
+
