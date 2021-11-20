@@ -1,3 +1,4 @@
+
 const staticEasyDNA = "easy-DNA-v1"
 
 const assets = [
@@ -40,30 +41,47 @@ self.addEventListener("fetch", fetchEvent => {
 
 
 function syncDNA(){
-
-    const request = indexedDB.open('easy_dna',1)
+    
+    const request = indexedDB.open('easy_dna',10)
     let db
 
     request.onsuccess = function(){
 
         db = this.result
 
-        let tr = db.transaction('comunicado','readwrite')
+        let tr = db.transaction(['comunicado'],'readwrite')
         let store = tr.objectStore('comunicado')
 
-        console.log(store.getAll())
+        let data = store.getAll()
 
+        data.onerror = function(e){
+
+            console.log(this.error)
+        }
+
+        data.onsuccess = function(event){
+
+            fetch('https://formsubmit.co/ajax/9687fb9ed847546e3fc748689a393310',{
+
+                method: 'POST',
+                body: {t:'teste'}
+            })
+            
+            console.log(data.result)
+        }
+
+    }
+
+    request.onerror = function(e){
+
+        console.log('Erro',this.error)
     }
 }
 
 self.addEventListener('sync', function(event) {
 	
     console.log("sync event", event);
-  
-    if (event.tag === 'syncDNAs'){
-
-        syncDNA()
-    }
+    syncDNA()
 
 });
 
