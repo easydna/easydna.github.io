@@ -1,0 +1,23 @@
+{
+  "name": "Easy DNA - DNA de um jeito simpes",
+  "short_name": "Easy DNA",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#fdfdfd",
+  "theme_color": "#17de12",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "./icon/android-chrome-192x192.png",
+      "type": "image/png", "sizes": "192x192"
+    },
+    {
+      "src": "./icon/android-chrome-512x512.png",
+      "type": "image/png", "sizes": "512x512"
+    },
+    {
+      "src": "./icon/apple-touch-icon.png",
+      "type": "image/png", "sizes": "180x180"
+    }
+  ]
+}
