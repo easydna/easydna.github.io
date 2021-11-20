@@ -37,3 +37,14 @@ self.addEventListener("fetch", fetchEvent => {
       })
     )
 })
+
+self.addEventListener('sync', function(event) {
+	
+    console.log("sync event", event);
+  
+    if (event.tag === 'syncDNA'){
+
+        console.log('SyncDNA')
+    }
+
+});
