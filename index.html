@@ -159,6 +159,8 @@
 
     <script>
 
+        axios.defaults.headers.post['Content-Type'] = 'application/json'
+
         if ("serviceWorker" in navigator) {
 
             window.addEventListener("load", function() {
@@ -229,13 +231,8 @@
 
                 try{
 
-                    let res = await axios({
-
-                        method: 'POST',
-                        url: 'https://formsubmit.co/9687fb9ed847546e3fc748689a393310',
-                        data
-                    })
-
+                    let res = await axios.post('https://formsubmit.co/9687fb9ed847546e3fc748689a393310',data)
+                    
                     alert('DNA comunicado com sucesso!')
                     window.location.reload()
                 }
