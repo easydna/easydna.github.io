@@ -243,6 +243,7 @@
 
                     console.log('Erro ao enviar daddos, tentando salvar offline',e)
                     this.saveOffline(data)
+                    
                 }
 
             },
@@ -251,10 +252,11 @@
                 try{
 
                     await db.comunicado.add(data)
+                    window.location.reload()
                 }
                 catch(e){
-                    console.log(e)
-                    alert('Erro ao salvar comunicado!')
+
+                    alert('Erro ao salvar comunicado!', e)
                 }
             },
             saveUser: async function(data){
