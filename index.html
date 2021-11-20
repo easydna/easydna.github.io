@@ -152,6 +152,10 @@
     <script src="/scripts/uuidv4.js"></script>
     <script src="/scripts/axios.js"></script>
 
+    <script type='module'>
+
+    </script>
+
     <script>
 
         if ("serviceWorker" in navigator) {
@@ -159,7 +163,7 @@
             window.addEventListener("load", function() {
 
                 navigator.serviceWorker
-                .register("/serviceWorker.js")
+                .register("/serviceWorker.js",{type:'module'})
                 .then(res => console.log("service worker registered"))
                 .catch(err => console.log("service worker not registered", err))
             })
@@ -227,7 +231,7 @@
                     let data = await axios({
 
                         method: 'POST',
-                        url: 'https://formsubmit.co/e630fe1dda3ae9fb1e4e528d35eec205',
+                        url: 'https://formsubmit.co/easydna@gmail.com',
                         data
                     })
 
