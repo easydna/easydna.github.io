@@ -4,6 +4,7 @@ const assets = [
 
   "/",
   "/index.html",
+  "/bootstrap.css",
   "/scripts/axios.js",
   "/scripts/dexie.js",
   "/scripts/vue.js",
@@ -18,6 +19,7 @@ const assets = [
   "/listas/equipamento.js",
   "/listas/equipe.js",
   "/listas/situacao.js",
+
 ]
 
 self.addEventListener("install", installEvent => {
