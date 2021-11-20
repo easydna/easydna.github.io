@@ -133,7 +133,7 @@
                         <!-- {{equipamento}} - {{item}} ESTÁ {{situacao}} -->
                     </div>
                 </div>
-                <button type='submit'>ACTIVATE</button>
+                <!-- <button type='submit'>ACTIVATE</button> -->
             </form>
         </div>
         <div class='container' v-if='np'>
@@ -232,7 +232,7 @@
                     let data = await axios({
 
                         method: 'POST',
-                        url: 'https://formsubmit.co/easydna@gmail.com',
+                        url: 'https://formsubmit.co/9687fb9ed847546e3fc748689a393310',
                         data
                     })
 
@@ -241,6 +241,7 @@
                 }
                 catch(e){
 
+                    console.log('Erro ao enviar daddos, tentando salvar offline',e)
                     this.saveOffline(data)
                 }
 
