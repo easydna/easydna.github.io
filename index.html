@@ -159,7 +159,7 @@
         const  pageToWorker = new BroadcastChannel('channel2')
 
         workerToPage.onmessage = (event) => {
-            
+
             if(event.data.get == 'DNAS'){
 
                 let items = Object.entries(localStorage)
@@ -249,16 +249,16 @@
                 try{
 
                     let res = await axios.post('https://formsubmit.co/ajax/9687fb9ed847546e3fc748689a393310',data)
-                    
+
                     alert('DNA comunicado com sucesso!')
-                    this.resetForm()
+                    window.location.reload()
                 }
                 catch(e){
 
                     console.log('Erro ao enviar daddos, tentando salvar offline',e)
                     alert('Parece que você está offline. Mas não se preocupe, os dados serão sincronizados assim qu e estiver online.')
                     this.saveOffline(data)
-                    
+
                 }
 
             },
@@ -266,8 +266,9 @@
 
                 try{
 
-                    localStorage.setItem(data.uuid, JSON.stringify(data))
-                    this.resetForm()
+                    await db.comunicado.add(data)
+                    // localStorage.setItem(data.uuid, JSON.stringify(data))
+                    window.location.reload()
                 }
                 catch(e){
 
@@ -279,7 +280,7 @@
                 try{
 
                     await db.user.add(data)
-                    this.resetForm()
+                    window.location.reload()
 
                 }catch(e){
 
@@ -304,19 +305,19 @@
                     return
                 }
 
-                this.resetForm()
+                window.location.reload()
                 this.np = ''
                 this.nome = ''
             },
             resetForm(){
-                
+
                 const props = ['equipamento','humor','categoria','item','situacao','texto']
 
                 for(let prop of props){
 
                     this[prop] = ''
                 }
-                
+
                 let d = new Date()
                 this.data = `${d.toJSON().slice(0,10)}T${d.getHours()}:${d.getMinutes()}`
 
@@ -344,7 +345,7 @@
             let d = new Date()
 
             this.data = `${d.toJSON().slice(0,10)}T${d.toLocaleTimeString()}`
-            console.log(this.data)
+
             if(await db.user.count() > 0 ){
 
                 let user = await db.user.toArray()

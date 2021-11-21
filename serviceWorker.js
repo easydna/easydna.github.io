@@ -8,6 +8,7 @@ const assets = [
   "/",
   "/index.html",
   "/bootstrap.css",
+  "/manifest.json",
   "/scripts/axios.js",
   "/scripts/dexie.js",
   "/scripts/vue.js",
@@ -41,23 +42,62 @@ self.addEventListener("fetch", fetchEvent => {
     )
 })
 
+function onerror(e){console.error('Erro on SW',e.target)}
+
+function opendDb(cb){
+
+    const t = indexedDB.open('easy_dna',10)
+
+    t.onerror = onerror
+    t.onsuccess = function(event) {
+
+        cb(t.result)
+    }
+    t.onupgradeneeded = function(event){
+
+        let db = event.target.result
+
+        if(!db.objectStoreNames.contains('comunicado')) {
+
+			var store = Db.createObjectStore('comunicado', {keyPath: 'uuid'})
+		}
+
+        opendDb(cb)
+    }
+}
+
+function getResults(cb){
+
+    opendDb(function(db){
+
+        let t = db.transaction(['comunicado'],"readonly").objectStore('comunicado').getAll()
+        t.onerror = onerror
+        t.onsuccess = function(){
+
+            cb(t.result)
+        }
+    })
+}
+
+function deleteItem(id){
+
+    opendDb(function(db){
+
+        let t = db.transaction(['comunicado'],"readwrite")
+        let store = t.objectStore('comunicado')
+        let delReq = store.delete(id)
+
+        delReq.onerror = onerror
+    })
+}
 
 function syncDNA(){
 
-    workerToPage.postMessage({get:'DNAS'})
+   getResults((result) => {
 
-    pageToWorker.onmessage = (event) => {
-        
-        let items = event.data.items
-        
-        try{
+        if(Array.isArray(result)){
 
-            if(!Array.isArray(items)){
-
-                return
-            }
-
-            for(let item of items){
+            for(let item of result){
 
                 fetch("https://formsubmit.co/ajax/9687fb9ed847546e3fc748689a393310", {
 
@@ -67,28 +107,26 @@ function syncDNA(){
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     },
-                    body: item[1]
+                    body: JSON.stringify(item)
 
                 }).then(res => {
 
-                    workerToPage.postMessage({delete:item[0]})
+                    console.log('Item synced and removed')
+                    deleteItem(item.uuid)
+                    
                 })
                 .catch(e => {
 
-                    console.log('Erroa ao sincronizar',e)
+                    console.log('Erro ao sincronizar - SW',e)
                 })
             }
-        
-        }
-        catch(e) {
 
-            console.log('Erro no SW',e)
         }
-    }
+    })
 }
 
 self.addEventListener('sync', function(event) {
-    
+
     syncDNA()
 
 });
