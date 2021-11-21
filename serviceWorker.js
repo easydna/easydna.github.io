@@ -80,13 +80,8 @@ function syncDNA(){
 }
 
 self.addEventListener('sync', function(event) {
-
-   setInterval( () =>{
-    
+ 
     syncDNA()
-
-   } ,2000)
-    
-
+  
 });
 
