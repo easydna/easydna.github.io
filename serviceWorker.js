@@ -42,97 +42,56 @@ self.addEventListener("fetch", fetchEvent => {
     )
 })
 
-function onerror(e){console.error('Erro on SW',e.target)}
+self.importScripts('./scripts/dexie.js')
+self.importScripts('./scripts/axios.js')
 
-function opendDb(cb){
+axios.defaults.headers = {
 
-    const t = indexedDB.open('easy_dna',10)
-
-    t.onerror = onerror
-    t.onsuccess = function(event) {
-
-        cb(t.result)
-    }
-    t.onupgradeneeded = function(event){
-
-        let db = event.target.result
-
-        if(!db.objectStoreNames.contains('comunicado')) {
-
-			var store = Db.createObjectStore('comunicado', {keyPath: 'uuid'})
-		}
-
-        opendDb(cb)
-    }
+    'Cache-Control': 'no-cache',
+    'Pragma': 'no-cache',
+    'Expires': '0',
+    'Content-Type': 'application/json'
 }
 
-function getResults(cb){
+async function syncDNA(){
 
-    opendDb(function(db){
+    const db = new Dexie('easy_dna')
+    
+    db.version(1).stores({
 
-        let t = db.transaction(['comunicado'],"readonly").objectStore('comunicado').getAll()
-        t.onerror = onerror
-        t.onsuccess = function(){
+        comunicado:'uuid, np,nome,data,unidade,gerencia,equipe,equipamento,humor,categoria,item,situacao,texto,token'
+    })
 
-            cb(t.result)
+    try{
+
+        let dnas = await db.comunicado.toArray()
+
+        for(let dna in dnas){
+
+            let res = await fetch("https://formsubmit.co/ajax/9687fb9ed847546e3fc748689a393310", {
+
+                method: "POST", cache:'no-cache', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                body: JSON.stringify(dna)
+
+            })
+
+            //db.comunicado.delete(dna.uuid)
         }
-    })
+    }
+    catch(err){
+
+        console.error(err)
+    }
 }
 
-function deleteItem(id){
 
-    opendDb(function(db){
+self.addEventListener('sync', function(event) {
 
-        let t = db.transaction(['comunicado'],"readwrite")
-        let store = t.objectStore('comunicado')
-        let delReq = store.delete(id)
+    // setTimeout( _ => {
 
-        delReq.onerror = onerror
-    })
-}
+    //     syncDNA()
 
-function syncDNA(){
-    console.log('Sync')
-   getResults((result) => {
-    console.log(result)
-        if(Array.isArray(result)){
+    // },30000)
 
-            for(let item of result){
-
-                console.log("Tipo ", typeof item)
-                fetch("https://formsubmit.co/ajax/9687fb9ed847546e3fc748689a393310", {
-
-                    method: "POST",
-                    cache:'no-cache',
-                    headers: {
-
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(item)
-
-                }).then(res => {
-
-                    console.log('Item synced and removed')
-                    deleteItem(item.uuid)
-                    
-                })
-                .catch(e => {
-
-                    console.log('Erro ao sincronizar - SW',e)
-                })
-            }
-
-        }
-    })
-}
-
-// self.addEventListener('sync', function(event) {
-
-//     setTimeout( _ => {
-
-//         syncDNA()
-
-//     },30000)
-
-// });
+    syncDNA()
+});
