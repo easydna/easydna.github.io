@@ -49,39 +49,47 @@ function syncDNA(){
     pageToWorker.onmessage = (event) => {
         
         let items = event.data.items
-     
-        if(!Array.isArray(items)){
+        
+        try{
 
-            return
+            if(!Array.isArray(items)){
+
+                return
+            }
+
+            for(let item of items){
+
+                fetch("https://formsubmit.co/ajax/9687fb9ed847546e3fc748689a393310", {
+
+                    method: "POST",
+                    headers: {
+
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: item[1]
+
+                }).then(res => {
+
+                    workerToPage.postMessage({delete:item[0]})
+                })
+                .catch(e => {
+
+                    console.log('Erroa ao sincronizar',e)
+                })
+            }
+        
         }
+        catch(e) {
 
-        for(let item of items){
-
-            fetch("https://formsubmit.co/ajax/9687fb9ed847546e3fc748689a393310", {
-
-                method: "POST",
-                headers: {
-
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: item[1]
-
-            }).then(res => {
-
-                workerToPage.postMessage({delete:item[0]})
-            })
-            .catch(e => {
-
-                console.log('Erroa ao sincronizar',e)
-            })
+            console.log('Erro no SW',e)
         }
     }
 }
 
 self.addEventListener('sync', function(event) {
     
-    // syncDNA()
+    syncDNA()
 
 });
 
