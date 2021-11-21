@@ -54,7 +54,7 @@ function syncDNA(){
 
             return
         }
-        
+
         for(let item of items){
 
             fetch("https://formsubmit.co/ajax/9687fb9ed847546e3fc748689a393310", {
@@ -80,8 +80,8 @@ function syncDNA(){
 }
 
 self.addEventListener('sync', function(event) {
- 
-    syncDNA()
-  
+    
+    // syncDNA()
+
 });
 
