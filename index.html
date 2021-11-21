@@ -139,7 +139,7 @@
         <div class='container' v-if='np'>
             <div class='row mb-5 justify-content-center'>
                 <div class='col-12'>
-                    <button class='btn btn-primary' @click='sendForm'>Enviar</button>
+                    <button class='btn btn-primary' @click='sendForm' :disabled='disableSendButton'>Enviar</button>
                 </div>
             </div>
         </div>
@@ -192,7 +192,7 @@
         data:{
 
             unidade:'',gerencia:'',equipe:'',equipamento:'',humor:'',categoria:'',item:'',situacao:'',
-            texto:'',np:'',nome:'',data:'',token:'',uuid:uuidv4(),
+            texto:'',np:'',nome:'',data:'',token:'',uuid:uuidv4(),disableSendButton:false,
         },
         methods:{
 
@@ -229,6 +229,7 @@
 
                 try{
 
+                    this.disableSendButton = true
                     let res = await axios.post('https://formsubmit.co/ajax/9687fb9ed847546e3fc748689a393310',data)
 
                     alert('DNA comunicado com sucesso!')
@@ -239,7 +240,10 @@
                     console.log('Erro ao enviar daddos, tentando salvar offline',e)
                     alert('Parece que você está offline. Mas não se preocupe, os dados serão sincronizados assim qu e estiver online.')
                     this.saveOffline(data)
+                }
+                finally{
 
+                    this.disableSendButton = false
                 }
 
             },
@@ -289,20 +293,6 @@
                 window.location.reload()
                 this.np = ''
                 this.nome = ''
-            },
-            resetForm(){
-
-                const props = ['equipamento','humor','categoria','item','situacao','texto']
-
-                for(let prop of props){
-
-                    this[prop] = ''
-                }
-
-                let d = new Date()
-                this.data = `${d.toJSON().slice(0,10)}T${d.getHours()}:${d.getMinutes()}`
-
-                this.uuid = uuidv4()
             }
         },
         computed:{

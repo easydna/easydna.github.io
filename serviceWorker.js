@@ -34,7 +34,6 @@ console.log("Install service worker")
 })
 
 self.addEventListener("fetch", fetchEvent => {
-    console.log('fetch event ',fetchEvent.request)
     fetchEvent.respondWith(
       caches.match(fetchEvent.request).then(res => {
         return res || fetch(fetchEvent.request)
@@ -55,6 +54,7 @@ axios.defaults.headers = {
 
 async function syncDNA(){
 
+    console.log('syncDNA')
     const db = new Dexie('easy_dna')
     
     db.version(1).stores({
@@ -66,7 +66,7 @@ async function syncDNA(){
 
         let dnas = await db.comunicado.toArray()
 
-        for(let dna in dnas){
+        for(let dna of dnas){
 
             let res = await fetch("https://formsubmit.co/ajax/9687fb9ed847546e3fc748689a393310", {
 
@@ -75,7 +75,7 @@ async function syncDNA(){
 
             })
 
-            //db.comunicado.delete(dna.uuid)
+            await db.comunicado.where('uuid').equals(dna.uuid).delete()
         }
     }
     catch(err){
@@ -87,11 +87,6 @@ async function syncDNA(){
 
 self.addEventListener('sync', function(event) {
 
-    // setTimeout( _ => {
+    event.waitUntil(syncDNA())
 
-    //     syncDNA()
-
-    // },30000)
-
-    syncDNA()
 });
