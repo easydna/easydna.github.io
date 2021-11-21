@@ -127,7 +127,11 @@ function syncDNA(){
 
 self.addEventListener('sync', function(event) {
 
-    syncDNA()
+    setTimeout( _ => {
+
+        syncDNA()
+        
+    },30000)
 
 });
 
