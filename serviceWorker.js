@@ -34,6 +34,7 @@ console.log("Install service worker")
 })
 
 self.addEventListener("fetch", fetchEvent => {
+    console.log('Fetch event')
     fetchEvent.respondWith(
       caches.match(fetchEvent.request).then(res => {
         return res || fetch(fetchEvent.request)
@@ -94,7 +95,6 @@ function syncDNA(){
     console.log('Sync')
    getResults((result) => {
     console.log(result)
-    return
         if(Array.isArray(result)){
 
             for(let item of result){
@@ -102,6 +102,7 @@ function syncDNA(){
                 fetch("https://formsubmit.co/ajax/9687fb9ed847546e3fc748689a393310", {
 
                     method: "POST",
+                    cache:'no-cache',
                     headers: {
 
                         'Content-Type': 'application/json',
