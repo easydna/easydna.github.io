@@ -1,7 +1,5 @@
 
 const staticEasyDNA = "easy-DNA-v1"
-const  workerToPage  = new BroadcastChannel('channel1')
-const  pageToWorker = new BroadcastChannel('channel2')
 
 const assets = [
 
@@ -95,7 +93,8 @@ function deleteItem(id){
 function syncDNA(){
     console.log('Sync')
    getResults((result) => {
-
+    console.log(result)
+    return
         if(Array.isArray(result)){
 
             for(let item of result){
@@ -126,13 +125,13 @@ function syncDNA(){
     })
 }
 
-// self.addEventListener('sync', function(event) {
+self.addEventListener('sync', function(event) {
 
-//     setTimeout( _ => {
+    setTimeout( _ => {
 
-//         syncDNA()
+        syncDNA()
 
-//     },30000)
+    },30000)
 
-// });
+});
 
