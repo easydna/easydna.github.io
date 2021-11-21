@@ -27,6 +27,7 @@ const assets = [
 ]
 
 self.addEventListener("install", installEvent => {
+console.log("Install service worker")
   installEvent.waitUntil(
     caches.open(staticEasyDNA).then(cache => {
       cache.addAll(assets)
@@ -125,13 +126,13 @@ function syncDNA(){
     })
 }
 
-self.addEventListener('sync', function(event) {
+// self.addEventListener('sync', function(event) {
 
-    setTimeout( _ => {
+//     setTimeout( _ => {
 
-        syncDNA()
+//         syncDNA()
 
-    },30000)
+//     },30000)
 
-});
+// });
 
