@@ -133,7 +133,7 @@
                         <!-- {{equipamento}} - {{item}} ESTÁ {{situacao}} -->
                     </div>
                 </div>
-                <button type='submit'>Enviar</button>
+                <!-- <button type='submit'>Enviar</button> -->
             </form>
         </div>
         <div class='container' v-if='np'>
@@ -153,7 +153,24 @@
     <script src="/scripts/uuidv4.js"></script>
     <script src="/scripts/axios.js"></script>
 
-    <script type='module'>
+    <script>
+
+        const  workerToPage  = new BroadcastChannel('channel1')
+        const  pageToWorker = new BroadcastChannel('channel2')
+
+        workerToPage.onmessage = (event) => {
+            
+            if(event.data.get == 'DNAS'){
+
+                let items = Object.entries(localStorage)
+                pageToWorker.postMessage({items:items})
+            }
+            else if(event.data.delete){
+
+                console.log('delete item')
+                localStorage.removeItem(event.data.delete)
+            }
+        }
 
     </script>
 
@@ -248,7 +265,7 @@
 
                 try{
 
-                    await db.comunicado.add(data)
+                    localStorage.setItem(data.uuid, JSON.stringify(data))
                     window.location.reload()
                 }
                 catch(e){

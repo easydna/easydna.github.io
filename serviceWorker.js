@@ -1,5 +1,7 @@
 
 const staticEasyDNA = "easy-DNA-v1"
+const  workerToPage  = new BroadcastChannel('channel1')
+const  pageToWorker = new BroadcastChannel('channel2')
 
 const assets = [
 
@@ -41,47 +43,50 @@ self.addEventListener("fetch", fetchEvent => {
 
 
 function syncDNA(){
-    
-    const request = indexedDB.open('easy_dna',10)
-    let db
 
-    request.onsuccess = function(){
+    workerToPage.postMessage({get:'DNAS'})
 
-        db = this.result
+    pageToWorker.onmessage = (event) => {
+        
+        let items = event.data.items
+     
+        if(!Array.isArray(items)){
 
-        let tr = db.transaction(['comunicado'],'readwrite')
-        let store = tr.objectStore('comunicado')
-
-        let data = store.getAll()
-
-        data.onerror = function(e){
-
-            console.log(this.error)
+            return
         }
+        
+        for(let item of items){
 
-        data.onsuccess = function(event){
+            fetch("https://formsubmit.co/ajax/9687fb9ed847546e3fc748689a393310", {
 
-            fetch('https://formsubmit.co/ajax/9687fb9ed847546e3fc748689a393310',{
+                method: "POST",
+                headers: {
 
-                method: 'POST',
-                body: {t:'teste'}
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: item[1]
+
+            }).then(res => {
+
+                workerToPage.postMessage({delete:item[0]})
             })
-            
-            console.log(data.result)
+            .catch(e => {
+
+                console.log('Erroa ao sincronizar',e)
+            })
         }
-
-    }
-
-    request.onerror = function(e){
-
-        console.log('Erro',this.error)
     }
 }
 
 self.addEventListener('sync', function(event) {
-	
-    console.log("sync event", event);
+
+   setInterval( () =>{
+    
     syncDNA()
+
+   } ,2000)
+    
 
 });
 
