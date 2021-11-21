@@ -99,6 +99,7 @@ function syncDNA(){
 
             for(let item of result){
 
+                console.log("Tipo ", typeof item)
                 fetch("https://formsubmit.co/ajax/9687fb9ed847546e3fc748689a393310", {
 
                     method: "POST",
