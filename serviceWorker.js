@@ -34,7 +34,7 @@ console.log("Install service worker")
 })
 
 self.addEventListener("fetch", fetchEvent => {
-    console.log('Fetch event')
+    console.log('fetch event ',fetchEvent.request)
     fetchEvent.respondWith(
       caches.match(fetchEvent.request).then(res => {
         return res || fetch(fetchEvent.request)
