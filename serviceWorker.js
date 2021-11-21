@@ -92,7 +92,7 @@ function deleteItem(id){
 }
 
 function syncDNA(){
-
+    console.log('Sync')
    getResults((result) => {
 
         if(Array.isArray(result)){
@@ -130,7 +130,7 @@ self.addEventListener('sync', function(event) {
     setTimeout( _ => {
 
         syncDNA()
-        
+
     },30000)
 
 });
