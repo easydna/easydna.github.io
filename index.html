@@ -155,27 +155,6 @@
 
     <script>
 
-        const  workerToPage  = new BroadcastChannel('channel1')
-        const  pageToWorker = new BroadcastChannel('channel2')
-
-        workerToPage.onmessage = (event) => {
-
-            if(event.data.get == 'DNAS'){
-
-                let items = Object.entries(localStorage)
-                pageToWorker.postMessage({items:items})
-            }
-            else if(event.data.delete){
-
-                console.log('delete item')
-                localStorage.removeItem(event.data.delete)
-            }
-        }
-
-    </script>
-
-    <script>
-
         axios.defaults.headers.post['Content-Type'] = 'application/json'
 
         if ("serviceWorker" in navigator) {
@@ -183,7 +162,7 @@
             window.addEventListener("load", function() {
 
                 navigator.serviceWorker
-                .register("/serviceWorker.js",{type:'module'})
+                .register("/serviceWorker.js")
                 .then(res => console.log("service worker registered"))
                 .catch(err => console.log("service worker not registered", err))
             })
@@ -193,6 +172,8 @@
             .then(() => console.log("Registered background sync"))
             .catch(err => console.error("Error registering background sync", err))
         }
+
+        // Notification.requestPermission(function(result){})
 
         const db = new Dexie('easy_dna')
 
