@@ -279,7 +279,7 @@
                 try{
 
                     await db.user.add(data)
-                    window.location.reload()
+                    this.resetForm()
 
                 }catch(e){
 
@@ -304,7 +304,21 @@
                     return
                 }
 
-                window.location.reload()
+                this.resetForm()
+            },
+            resetForm(){return
+                
+                const props = ['equipamento','humor','categoria','item','situacao','texto']
+
+                for(let prop of props){
+
+                    this[prop] = ''
+                }
+                
+                let d = new Date()
+                this.data = `${d.toJSON().slice(0,10)}T${d.getHours()}:${d.getMinutes()}`
+
+                this.uuid = uuidv4()
             }
         },
         computed:{
@@ -327,8 +341,8 @@
 
             let d = new Date()
 
-            this.data = `${d.toJSON().slice(0,10)}T${d.getHours()}:${d.getMinutes()}`
-
+            this.data = `${d.toJSON().slice(0,10)}T${d.toLocaleTimeString()}`
+            console.log(this.data)
             if(await db.user.count() > 0 ){
 
                 let user = await db.user.toArray()
