@@ -256,6 +256,7 @@
                 catch(e){
 
                     console.log('Erro ao enviar daddos, tentando salvar offline',e)
+                    alert('Parece que você está offline. Mas não se preocupe, os dados serão sincronizados assim qu e estiver online.')
                     this.saveOffline(data)
                     
                 }
