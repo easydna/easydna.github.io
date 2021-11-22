@@ -54,14 +54,10 @@
                 </div>
             </div>
         </div>
-        <div class='container form mt-4' v-else>
+        <div class='container form mt-5' v-else>
             <form action="https://formsubmit.co/easydna2021@gmail.com" method="POST">
                 <input type="hidden" name="_next" value="https://easydna.github.io"><input type="hidden" name="_subject" value="Comunicado de DNA"><input type="text" name="_honey" style="display:none"><input type="hidden" name="_captcha" value="false">
                 <div class='row mb-5'>
-                    <div class="col-4">
-                        <label class="form-label mb-0">Data</label><br>
-                        <input type="datetime-local" class="form-control " name='DATA' v-model='data'>
-                    </div>
                     <div class="col-4">
                         <label class="form-label mb-0">Unidade</label><br>
                         <select class="form-select" v-model='unidade' name='UNIDADE'>
@@ -69,8 +65,6 @@
                             <option v-for='(unidade,i) in unidades' :key='i' :value='unidade'>{{unidade}}</option>
                         </select>
                     </div>
-                </div>
-                <div class='row mb-5 justify-content-center'>
                     <div class="col-4">
                         <label class="form-label mb-0">Gerencia</label><br>
                         <select class="form-select" v-model='gerencia' name='GERENCIA'>
@@ -85,6 +79,12 @@
                             <option v-for='(equipe,i) in equipes' :key='i' :value='equipe'>{{equipe}}</option>
                         </select>
                     </div>
+                </div>
+                <div class='row mb-5 justify-content-center'>
+                    <div class="col-4">
+                        <label class="form-label mb-0">Data</label><br>
+                        <input type="datetime-local" class="form-control " name='DATA' v-model='data'>
+                    </div>
                     <div class="col-4">
                         <label class="form-label mb-0">Equipamento</label><br>
                         <select class="form-select" v-model='equipamento' name='EQUIPAMENTO'>
@@ -92,9 +92,7 @@
                             <option v-for='(equipamento,i) in equipamentos' :key='i' :value='equipamento'>{{equipamento}}</option>
                         </select>
                     </div>
-                </div>
-                <div class='row mb-5 justify-content-center'>
-                    <div class="col-6">
+                    <div class="col-4">
                         <label class="form-label mb-0">Humor do DNA</label><br>
                         <select class="form-select" v-model='humor' name='HUMOR'>
                             <option value="" selected>Selecione</option>
@@ -102,23 +100,23 @@
                             <option value='NEGATIVO'>Negativo</option>
                         </select>
                     </div>
-                    <div class="col-6">
+                </div>
+                <div class='row mb-5 justify-content-center'>
+                    <div class="col-4">
                         <label class="form-label mb-0">Categoria</label><br>
                         <select class="form-select" v-model='categoria' name='CATEGORIA'>
                             <option value="" selected>Selecione</option>
                             <option v-for='(categoria,i) in categorias' :key='i' :value='categoria'>{{categoria}}</option>
                         </select>
                     </div>
-                </div>
-                <div class='row mb-5 justify-content-center'>
-                    <div class="col-6">
+                    <div class="col-4">
                         <label class="form-label mb-0">Item</label><br>
                         <select class="form-select" v-model='item' name='ITEM'>
                             <option value="" selected>Selecione</option>
                             <option v-for='(item,i) in items' :key='i' :value='item'>{{item}}</option>
                         </select>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <label class="form-label mb-0">Situação ou Desvio</label><br>
                         <select class="form-select" v-model='situacao' name='SITUAÇÃO'>
                             <option value="" selected>Selecione</option>
