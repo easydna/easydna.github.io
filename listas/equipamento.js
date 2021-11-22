@@ -23,6 +23,7 @@ let equipamento = [
     {nome:'QXV2C34', equipe:'Módulo 04'},
     {nome:'QXV2C36', equipe:'Módulo 04'},
     {nome:'GGD-0029', equipe:'Módulo 04'},
+    {nome:'ESTRUTURA MÓDULO', equipe:'Módulo 04'},
     {nome:'OUTRO', equipe:'Módulo 04'},
 ]
 
