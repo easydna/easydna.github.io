@@ -427,6 +427,33 @@ let situacao = [
     },
     {
         humor: "NEGATIVO",
+        categoria: "EPIS E UNIFORMES",
+        item: "COLETE",
+        situacao: "PERDA"
+    },{
+        humor: "NEGATIVO",
+        categoria: "EPIS E UNIFORMES",
+        item: "COLETE",
+        situacao: "DANO POR DESGASTE NATURAL"
+    },{
+        humor: "NEGATIVO",
+        categoria: "EPIS E UNIFORMES",
+        item: "COLETE",
+        situacao: "DANO POR ACIDENTE/INCIDENTE"
+    },{
+        humor: "NEGATIVO",
+        categoria: "EPIS E UNIFORMES",
+        item: "COLETE",
+        situacao: "DANO POR MAU USO"
+    },
+    {
+        humor: "NEGATIVO",
+        categoria: "EPIS E UNIFORMES",
+        item: "OUTRO",
+        situacao: "OUTRO"
+    },
+    {
+        humor: "NEGATIVO",
         categoria: "ALIMENTAÇÃO",
         item: "DESJEJUM",
         situacao: "QUALIDADE BAIXA"
